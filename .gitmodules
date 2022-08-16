@@ -1,33 +1,33 @@
 [submodule "src/nodejs/ms-measure"]
 	path = src/nodejs/ms-measure
-	url = ../../../nodejs-ms-measure.git
+	url = ../../nodejs-ms-measure.git
 [submodule "src/go/ms-uptime"]
 	path = src/go/ms-uptime
-	url = ../../../go-ms-uptime.git
+	url = ../../go-ms-uptime.git
 [submodule "src/go/ms-monitor"]
 	path = src/go/ms-monitor
-	url = ../../../go-ms-monitor.git
+	url = ../../go-ms-monitor.git
 [submodule "src/go/ms-log"]
 	path = src/go/ms-log
-	url = ../../../go-ms-log.git
+	url = ../../go-ms-log.git
 [submodule "src/go/measured"]
 	path = src/go/measured
-	url = ../../../go-measured.git
+	url = ../../go-measured.git
 [submodule "src/go/requestlogger"]
 	path = src/go/requestlogger
-	url = ../../../go-requestlogger.git
+	url = ../../go-requestlogger.git
 [submodule "src/angular/fe-weatherstation"]
 	path = src/angular/fe-weatherstation
-	url = ../../../angular-fe-weatherstation.git
+	url = ../../angular-fe-weatherstation.git
 [submodule "src/go/common"]
 	path = src/go/common
-	url = ../../../go-common.git
+	url = ../../go-common.git
 [submodule "src/go/ms-random"]
 	path = src/go/ms-random
-	url = ../../../go-ms-random.git
+	url = ../../go-ms-random.git
 [submodule "src/go/ms-measure"]
 	path = src/go/ms-measure
-	url = ../../../go-ms-measure.git
+	url = ../../go-ms-measure.git
 [submodule "src/go/fe-measure"]
 	path = src/go/fe-measure
-	url = ../../../go-fe-measure.git
+	url = ../../go-fe-measure.git
