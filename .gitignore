@@ -2,7 +2,6 @@ bin/
 build/
 build-go
 dist/
-docker/
 pkg/
 *~
 *.a
