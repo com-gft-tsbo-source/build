@@ -34,6 +34,6 @@
 [submodule "src/go/loadsucker"]
 	path = src/go/loadsucker
 	url = ../../com-gft-tsbo-source/go-loadsucker.git
-[submodule "src/go/ms-proxy"]
-	path = src/go/ms-proxy
-	url = ../../com-gft-tsbo-source/go-ms-proxy.git
+[submodule "src/go/ms-forward"]
+	path = src/go/ms-forward
+	url = git@github.com:com-gft-tsbo-source/go-ms-forward.git
