@@ -21,3 +21,4 @@ pkg/
 *.pyc
 .terraform
 *.tfstate*
+.vscode*
