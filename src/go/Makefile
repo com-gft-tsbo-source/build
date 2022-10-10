@@ -1,145 +1,63 @@
 SHELL := /bin/bash
 
-CUSTOMER ?= com.gft.tsbo
-PROJECT ?= com.gft.tsbo.source
+include ../../.makeinfo
+include ../../.makeproject
+include ../../.makecommands
+
+MODULES := $(shell find ./src -maxdepth 1 -mindepth 1 -type d | sed 's/^..//' | grep -v '^src/common$$' | grep -v '^src/loadsucker$$' )
 TIMESTAMP ?= $(shell date +%Y%m%d%H%M%S)
-GITHASH ?= $(shell ( git rev-parse HEAD  ) )
-_GITHASH := $(shell ( echo "$(GITHASH)" | sed 's/^ *//; s/  *$$//; s/  */\\|/g') )
 
-DIST_DIR ?= ../../../bin
+.PHONY: all old new $(MODULES) clean distclean docker info _buildinfo
 
-LIBS := 
-BINS := ms-random ms-measure fe-measure measured ms-log ms-monitor ms-uptime requestlogger # ms-proxyloadsucker 
+DOCKER_TARGET=all
+all: DOCKER_TARGET=all
+all: $(MODULES)
+docker: DOCKER_TARGET=docker
+docker: $(MODULES)
+docker-local: DOCKER_TARGET=docker-local
+docker-local: $(MODULES)
 
-LIBS_SUBDIRS := $(addprefix ./lib,$(LIBS))
-BINS_SUBDIRS := $(addprefix ./,$(BINS))
+_buildinfo:
+	@$(ECHO) "### GO  /INFO  $(PROJECT)"
+	@$(ECHO) "MODULES        $(MODULES)"
+	@$(ECHO) "CUSTOMER       '$(CUSTOMER)'" 
+	@$(ECHO) "PROJECT        '$(PROJECT)'" 
+	@$(ECHO) "COMPONENT      '$(COMPONENT)'" 
+	@$(ECHO) "MODULE         '$(MODULE)'" 
+	@$(ECHO) "TIMESTAMP      '$(TIMESTAMP)'" 
+	@$(ECHO) "GITHASH        '$(GITHASH)'" 
 
-SUBDIRS = $(LIBS_SUBDIRS) $(BINS_SUBDIRS)
+$(MODULES):
+	@$(MAKE) -C $@ $(DOCKER_TARGET)
 
-all: dep lib bin
-
-.PHONY: lib bin docker clean distclean dep include
-
-lib:
-
-include:
-
-bin:
-	@for dir in $(BINS_SUBDIRS) ; do \
-	    TIMESTAMP="$(TIMESTAMP)" \
-	    GITHASH="$(GITHASH)" \
-	    CUSTOMER="$(CUSTOMER)" \
-	    PROJECT="$(PROJECT)" \
-	    DIST_DIR="$(DIST_DIR)" \
-	    make -C $$dir bin ; \
+info: _buildinfo
+	@for i in $(MODULES) ; do \
+	    if [[ ! -d "$$i" ]] ; then continue ; fi ; \
+			make -C "$$i" info ; \
 	done
 
-dist:
-	@for dir in $(BINS_SUBDIRS) ; do \
-	    TIMESTAMP="$(TIMESTAMP)" \
-	    GITHASH="$(GITHASH)" \
-	    CUSTOMER="$(CUSTOMER)" \
-	    PROJECT="$(PROJECT)" \
-	    DIST_DIR="$(DIST_DIR)" \
-		make -C  $$dir dist ; \
-	done
-
-dep:
-	@for dir in $(BINS_SUBDIRS) ; do \
-	    TIMESTAMP="$(TIMESTAMP)" \
-	    GITHASH="$(GITHASH)" \
-	    CUSTOMER="$(CUSTOMER)" \
-	    PROJECT="$(PROJECT)" \
-	    DIST_DIR="$(DIST_DIR)" \
-		make -C  $$dir dep ; \
-	done
-
-docker:
-	@for dir in $(BINS_SUBDIRS) ; do \
-	    TIMESTAMP="$(TIMESTAMP)" \
-	    GITHASH="$(GITHASH)" \
-	    CUSTOMER="$(CUSTOMER)" \
-	    PROJECT="$(PROJECT)" \
-	    DIST_DIR="$(DIST_DIR)" \
-		make -C  $$dir docker; \
-	done
-
-clean:
-	@for dir in $(SUBDIRS) ; do \
-	    TIMESTAMP="$(TIMESTAMP)" \
-	    GITHASH="$(GITHASH)" \
-	    CUSTOMER="$(CUSTOMER)" \
-	    PROJECT="$(PROJECT)" \
-	    DIST_DIR="$(DIST_DIR)" \
-		make -C  $$dir clean ; \
-	done
-
-distclean:
-	@for dir in $(SUBDIRS) ; do \
-	    TIMESTAMP="$(TIMESTAMP)" \
-	    GITHASH="$(GITHASH)" \
-	    CUSTOMER="$(CUSTOMER)" \
-	    PROJECT="$(PROJECT)" \
-	    DIST_DIR="$(DIST_DIR)" \
-		make -C  $$dir distclean ; \
-	done
-
-docker-clean:
-	@for dir in $(BINS_SUBDIRS) ; do \
-	    TIMESTAMP="$(TIMESTAMP)" \
-	    GITHASH="$(GITHASH)" \
-	    CUSTOMER="$(CUSTOMER)" \
-	    PROJECT="$(PROJECT)" \
-	    DIST_DIR="$(DIST_DIR)" \
-		make -C  $$dir docker-clean; \
-	done
-
-docker-distclean:
-	@for dir in $(BINS_SUBDIRS) ; do \
-	    TIMESTAMP="$(TIMESTAMP)" \
-	    GITHASH="$(GITHASH)" \
-	    CUSTOMER="$(CUSTOMER)" \
-	    PROJECT="$(PROJECT)" \
-	    DIST_DIR="$(DIST_DIR)" \
-		make -C  $$dir docker-distclean; \
-	done
-
-ls:
-	@for dir in $(BINS_SUBDIRS) ; do \
-	    TIMESTAMP="$(TIMESTAMP)" \
-	    GITHASH="$(GITHASH)" \
-	    CUSTOMER="$(CUSTOMER)" \
-	    PROJECT="$(PROJECT)" \
-	    DIST_DIR="$(DIST_DIR)" \
-  		  make -C $$dir ls; \
+clean distclean ls:
+	@for i in $(MODULES) ; do \
+	    if [[ ! -d "$$i" ]] ; then continue ; fi ; \
+			$(MAKE) -C "$$i" $@ ; \
 	done
 
 docker-ls:
-	@for dir in $(BINS_SUBDIRS) ; do \
-	    TIMESTAMP="$(TIMESTAMP)" \
-	    GITHASH="$(GITHASH)" \
-	    CUSTOMER="$(CUSTOMER)" \
-	    PROJECT="$(PROJECT)" \
-	    DIST_DIR="$(DIST_DIR)" \
-  		  make -C $$dir docker-ls; \
-	done
+	@$(ECHO) "### GO  /DOLS  $(PROJECT)"
+	@while read img imgname ; do \
+		$(ECHO) "I $$img $$imgname" ; \
+		while read id state name image ; do \
+			$(PRINTF) 'C %-7s %-10s %-20s %s\n' "$$id" "$$state" "$$name" "$$image" ; \
+		done < <( $(DOCKER) container ls --filter "ancestor=$$img" --format='{{.ID}} {{.State}} {{.Names}} {{.Image}}'  | sort ) ; \
+	done < <($(DOCKER) image ls --filter "label=PROJECT=$(PROJECT)" --filter "label=CUSTOMER=$(CUSTOMER)" --format='{{.ID}} {{.Repository}}:{{.Tag}}' | sort -k 2)
 
-test:
-	@for dir in $(BINS_SUBDIRS) ; do \
-	    TIMESTAMP="$(TIMESTAMP)" \
-	    GITHASH="$(GITHASH)" \
-	    CUSTOMER="$(CUSTOMER)" \
-	    PROJECT="$(PROJECT)" \
-	    DIST_DIR="$(DIST_DIR)" \
-  		  make -C $$dir test; \
-	done
-
-docker-test:
-	@for dir in $(BINS_SUBDIRS) ; do \
-	    TIMESTAMP="$(TIMESTAMP)" \
-	    GITHASH="$(GITHASH)" \
-	    CUSTOMER="$(CUSTOMER)" \
-	    PROJECT="$(PROJECT)" \
-	    DIST_DIR="$(DIST_DIR)" \
-  		  make -C $$dir docker-test; \
-	done
+docker-clean:
+	@$(ECHO) "### GOM /DOCLN $(PROJECT).$(MODULE).$(COMPONENT) - $(DOCKER_VARIANT)"
+	@while read img imgname ; do \
+		while read id state name image ; do \
+			$(PRINTF) 'C %-7s %-10s %-20s %s\n' "$$id" "$$state" "$$name" "$$image" ; \
+			$(DOCKER) container stop --time 5 "$$id" ; \
+		done < <( $(DOCKER) container ls --filter "ancestor=$$img" --format='{{.ID}} {{.State}} {{.Names}} {{.Image}}'  | sort ) ; \
+		$(ECHO) "I $$img $$imgname" ; \
+		$(DOCKER) image rm -f $$img ; \
+		done < <($(DOCKER) image ls --filter "label=PROJECT=$(PROJECT)" --filter "label=CUSTOMER=$(CUSTOMER)" --format='{{.ID}} {{.Repository}}:{{.Tag}}' "$(DOCKER_IMAGE)" | sort -k 2)

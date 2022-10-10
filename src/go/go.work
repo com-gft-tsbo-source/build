@@ -1,0 +1,12 @@
+go 1.18
+
+use ./src/common
+use ./src/fe-measure
+use ./src/measured
+use ./src/ms-forward
+use ./src/ms-log
+use ./src/ms-measure
+use ./src/ms-monitor
+use ./src/ms-random
+use ./src/ms-uptime
+use ./src/requestlogger
