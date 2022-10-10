@@ -2,38 +2,38 @@
 	path = src/nodejs/ms-measure
 	url = ../../com-gft-tsbo-source/nodejs-ms-measure.git
 [submodule "src/go/ms-uptime"]
-	path = src/go/ms-uptime
+	path = src/go/src/ms-uptime
 	url = ../../com-gft-tsbo-source/go-ms-uptime.git
 [submodule "src/go/ms-monitor"]
-	path = src/go/ms-monitor
+	path = src/go/src/ms-monitor
 	url = ../../com-gft-tsbo-source/go-ms-monitor.git
 [submodule "src/go/ms-log"]
-	path = src/go/ms-log
+	path = src/go/src/ms-log
 	url = ../../com-gft-tsbo-source/go-ms-log.git
 [submodule "src/go/measured"]
-	path = src/go/measured
+	path = src/go/src/measured
 	url = ../../com-gft-tsbo-source/go-measured.git
 [submodule "src/go/requestlogger"]
-	path = src/go/requestlogger
+	path = src/go/src/requestlogger
 	url = ../../com-gft-tsbo-source/go-requestlogger.git
 [submodule "src/angular/fe-weatherstation"]
 	path = src/angular/fe-weatherstation
 	url = ../../com-gft-tsbo-source/angular-fe-weatherstation.git
 [submodule "src/go/common"]
-	path = src/go/common
+	path = src/go/src/common
 	url = ../../com-gft-tsbo-source/go-common.git
 [submodule "src/go/ms-random"]
-	path = src/go/ms-random
+	path = src/go/src/ms-random
 	url = ../../com-gft-tsbo-source/go-ms-random.git
 [submodule "src/go/ms-measure"]
-	path = src/go/ms-measure
+	path = src/go/src/ms-measure
 	url = ../../com-gft-tsbo-source/go-ms-measure.git
 [submodule "src/go/fe-measure"]
-	path = src/go/fe-measure
+	path = src/go/src/fe-measure
 	url = ../../com-gft-tsbo-source/go-fe-measure.git
 [submodule "src/go/loadsucker"]
-	path = src/go/loadsucker
+	path = src/go/src/loadsucker
 	url = ../../com-gft-tsbo-source/go-loadsucker.git
 [submodule "src/go/ms-forward"]
-	path = src/go/ms-forward
+	path = src/go/src/ms-forward
 	url = git@github.com:com-gft-tsbo-source/go-ms-forward.git
