@@ -37,3 +37,6 @@
 [submodule "src/go/ms-forward"]
 	path = src/go/src/ms-forward
 	url = git@github.com:com-gft-tsbo-source/go-ms-forward.git
+[submodule "src/go/src/ms-pi"]
+	path = src/go/src/ms-pi
+	url = git@github.com:com-gft-tsbo-source/go-ms-pi.git

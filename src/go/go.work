@@ -10,3 +10,4 @@ use ./src/ms-monitor
 use ./src/ms-random
 use ./src/ms-uptime
 use ./src/requestlogger
+use ./src/ms-pi
