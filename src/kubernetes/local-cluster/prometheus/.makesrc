@@ -1,0 +1,1 @@
+URL=https://raw.githubusercontent.com/istio/istio/$(ISTIO_VERSION)/samples/addons/prometheus.yaml

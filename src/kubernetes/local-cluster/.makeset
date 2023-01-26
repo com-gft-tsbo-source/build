@@ -1,0 +1,2 @@
+ISTIO_VERSION ?= 1.13.3
+ISTIO_ARCH ?= linux-amd64

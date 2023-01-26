@@ -1,7 +1,9 @@
 CAT ?= cat
 CP ?= cp -pv
+CURL ?= curl --fail
 DOCKER ?= docker
 ECHO ?= echo
+KUBECTL ?= kubectl
 LN ?= ln
 LS ?= ls
 MAKE ?= make
